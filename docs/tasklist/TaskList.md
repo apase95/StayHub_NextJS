@@ -87,11 +87,11 @@ StayHub/
 
 - [x] **TSK-006** `[INFRA]` Cấu hình Prisma: `prisma/schema.prisma` (datasource PostgreSQL, generator TypeScript), Prisma client singleton tại `src/lib/prisma.ts`. *(Estimate: 0.5h · Priority: Urgent · Blocking INFRA schema tasks)*
 
-- [ ] **TSK-007** `[INFRA]` `src/app/providers.tsx`: `SessionProvider` (NextAuth) + `QueryClientProvider` (React Query v5). Cài React Query, NextAuth, bcryptjs. Root layout `src/app/layout.tsx` bọc Providers. *(Estimate: 1h · Priority: Urgent · Blocking FE)*
+- [x] **TSK-007** `[INFRA]` `src/app/providers.tsx`: `SessionProvider` (NextAuth) + `QueryClientProvider` (React Query v5). Cài React Query, NextAuth, bcryptjs. Root layout `src/app/layout.tsx` bọc Providers. *(Estimate: 1h · Priority: Urgent · Blocking FE)*
 
-- [ ] **TSK-008** `[INFRA]` ESLint (`eslint-config-next`, `@typescript-eslint/no-explicit-any`, `no-console: warn`), Prettier, `.gitignore` (`.env.local`, `.next/`, `node_modules/`, `public/uploads/`). *(Estimate: 0.5h · Priority: High)*
+- [x] **TSK-008** `[INFRA]` ESLint (`eslint-config-next`, `@typescript-eslint/no-explicit-any`, `no-console: warn`), Prettier, `.gitignore` (`.env.local`, `.next/`, `node_modules/`, `public/uploads/`). *(Estimate: 0.5h · Priority: High)*
 
-- [ ] **TSK-009** `[INFRA]` `src/lib/utils.ts`: `cn()` (clsx + tailwind-merge), `formatPrice()` (VND Intl formatter), `formatDate()`, `calculateNights()`. *(Estimate: 0.5h · Priority: High · Blocking FE và BE)*
+- [x] **TSK-009** `[INFRA]` `src/lib/utils.ts`: `cn()` (clsx + tailwind-merge), `formatPrice()` (VND Intl formatter), `formatDate()`, `calculateNights()`. *(Estimate: 0.5h · Priority: High · Blocking FE và BE)*
 
 - [ ] **TSK-010** `[BE]` `src/lib/api-response.ts`: type `ApiResponse<T>`, hàm `ok()` và `fail()` theo chuẩn `Rules.md`. `src/types/index.ts`: `Role`, `BookingStatus`, `PaymentStatus`, `PropertyType`, `AmenityType`. *(Estimate: 1h · Priority: Urgent · Blocking BE)*
 
