@@ -1,0 +1,323 @@
+# API Design
+
+## 1. Nguyên tắc chung
+
+StayHub sử dụng **RESTful API** cho các endpoint trả về dữ liệu dạng JSON (dùng cho AJAX, Alpine.js, htmx). Các trang chính sử dụng **Thymeleaf** và được phục vụ qua các controller trả về template.
+
+- **Endpoint cho API**: Luôn có tiền tố `/api/v1/`.
+- **Endpoint cho View**: Không có tiền tố `/api`, trả về tên template.
+
+## 2. Chuẩn response
+
+Tất cả API response đều được bọc trong đối tượng `ApiResponse<T>`:
+
+```json
+{
+  "success": true,
+  "message": "Thành công",
+  "data": { ... },
+  "errorCode": null
+}
+```
+
+- `success`: `true` hoặc `false`.
+- `message`: Thông báo dành cho người dùng (có thể hiển thị lên UI).
+- `data`: Dữ liệu trả về (có thể là object, array, null).
+- `errorCode`: Mã lỗi nội bộ (nếu có), ví dụ `"ERR_ROOM_NOT_AVAILABLE"`.
+
+## 3. HTTP Status codes
+
+| Status | Mô tả |
+| :--- | :--- |
+| `200 OK` | Thành công (GET, PUT, DELETE) |
+| `201 Created` | Tạo mới thành công (POST) |
+| `400 Bad Request` | Dữ liệu gửi lên không hợp lệ |
+| `401 Unauthorized` | Chưa đăng nhập |
+| `403 Forbidden` | Không có quyền truy cập |
+| `404 Not Found` | Không tìm thấy tài nguyên |
+| `409 Conflict` | Xung đột dữ liệu (ví dụ: phòng đã được đặt) |
+| `500 Internal Server Error` | Lỗi server |
+
+## 4. Danh sách API chính
+
+### 4.1. Authentication & User
+
+| Method | Endpoint | Mô tả | Yêu cầu |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/login` | Trang đăng nhập | - |
+| `POST` | `/login` | Xử lý đăng nhập | `username`, `password` |
+| `GET` | `/oauth2/authorization/google` | Bắt đầu đăng nhập Google OAuth2 | Spring Security OAuth2 client |
+| `GET` | `/login/oauth2/code/google` | Callback Google OAuth2 | Google redirect URI |
+| `GET` | `/register` | Trang đăng ký | - |
+| `POST` | `/register` | Gửi OTP đăng ký qua email, chưa tạo user | `fullName`, `username`, `email`, `password`, `confirmPassword` |
+| `GET` | `/register/verify` | Trang nhập OTP đăng ký | Query: `email` |
+| `POST` | `/register/verify` | Xác thực OTP và tạo user `LOCAL` | `email`, `otp` |
+| `POST` | `/logout` | Đăng xuất | - |
+
+### 4.2. Property & Search
+
+| Method | Endpoint | Mô tả | Yêu cầu |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/` | Trang chủ | - |
+| `GET` | `/home` | Alias trang chủ | - |
+| `GET` | `/properties` | Trang kết quả tìm kiếm | Query params: `location`, `checkIn`, `checkOut`, `guests`, `page`, `sort`... |
+| `GET` | `/properties/{id}` | Trang chi tiết property | Path: `id` |
+| `GET` | `/api/v1/properties` | API tìm kiếm trả về JSON | Tương tự query params + filter (price, type, amenities...) |
+| `GET` | `/api/v1/properties/{id}` | API lấy chi tiết property (JSON) | Path: `id` |
+
+### 4.3. Booking
+
+| Method | Endpoint | Mô tả | Yêu cầu |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/properties/{id}/book` | Trang đặt phòng | Path: `propertyId`, query: `checkIn`, `checkOut`, `guests` |
+| `POST` | `/bookings` | Tạo booking mới | Body: `propertyId`, `checkIn`, `checkOut`, `guests`, `guestInfo`... |
+| `GET` | `/my-bookings` | Trang danh sách booking của tôi | - |
+| `GET` | `/bookings/{id}` | Trang chi tiết booking | Path: `id` |
+| `GET` | `/bookings/{id}/payment` | Trang payment legacy/future scope | Flow VNPay mới dùng redirect checkout + return page |
+| `POST` | `/api/v1/bookings/check-availability` | Kiểm tra khả dụng (AJAX) | Body: `propertyId`, `checkIn`, `checkOut` |
+| `POST` | `/api/v1/bookings/{id}/cancel` | Hủy booking | Path: `id` |
+| `GET` | `/api/v1/payments/bookings/{bookingId}/status` | Poll trạng thái thanh toán/booking sau khi quay về từ VNPay | Path: `bookingId` |
+
+### 4.3.1. Discount
+
+| Method | Endpoint | Mô tả | Yêu cầu |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/v1/discounts/validate` | Kiểm tra mã giảm giá và tính lại tổng tiền | `propertyId`, `checkIn`, `checkOut`, `guests`, `code` |
+
+### 4.3.2. VNPay payment
+
+| Method | Endpoint | Mô tả | Yêu cầu |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/bookings` | Tạo booking `PENDING_PAYMENT`, payment `PENDING`, rồi redirect sang VNPay | Form booking + optional `discountCode` |
+| `GET` | `/payments/vnpay/return` | Trang kết quả sau khi VNPay redirect về StayHub | VNPay query params + `vnp_SecureHash` |
+| `GET` | `/api/v1/payments/vnpay/ipn` | VNPay IPN/webhook xác nhận thanh toán | VNPay query params + `vnp_SecureHash` |
+
+### 4.4. Host
+
+| Method | Endpoint | Mô tả | Yêu cầu |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/host/dashboard` | Trang dashboard của Host | - |
+| `GET` | `/host/properties` | Danh sách property của host | - |
+| `GET` | `/host/properties/new` | Form tạo property mới | - |
+| `POST` | `/host/properties` | Tạo property mới | Body form |
+| `GET` | `/host/properties/{id}/edit` | Form chỉnh sửa property | Path: `id` |
+| `PUT` | `/host/properties/{id}` | Cập nhật property | Path: `id`, Body |
+| `DELETE` | `/host/properties/{id}` | Xóa property | Path: `id` |
+| `GET` | `/api/v1/host/properties` | Danh sách property của host hiện tại | Session HOST/ADMIN |
+| `POST` | `/api/v1/host/properties` | Tạo property ở trạng thái DRAFT | JSON + CSRF |
+| `GET/PUT/DELETE` | `/api/v1/host/properties/{id}` | Đọc/cập nhật/archive property thuộc host | Ownership + CSRF khi mutate |
+| `POST` | `/api/v1/host/properties/{id}/images` | Upload JPEG/PNG | Multipart + CSRF |
+| `DELETE` | `/api/v1/host/properties/{id}/images/{imageId}` | Xóa ảnh | Ownership + CSRF |
+| `PUT` | `/api/v1/host/properties/{id}/images/{imageId}/cover` | Chọn ảnh cover | Ownership + CSRF |
+| `PUT` | `/api/v1/host/properties/{id}/images/order` | Sắp xếp toàn bộ gallery | JSON + CSRF |
+| `GET` | `/api/v1/amenities` | Danh mục amenities public | - |
+| `POST` | `/api/v1/host/bookings/{id}/accept` | Host chấp nhận booking | Path: `id` |
+| `POST` | `/api/v1/host/bookings/{id}/reject` | Host từ chối booking | Path: `id` |
+
+### 4.5. Admin
+
+| Method | Endpoint | Mô tả | Yêu cầu |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/admin/dashboard` | Dashboard admin | - |
+| `GET` | `/admin/bookings` | Quản lý booking toàn hệ thống | - |
+| `GET` | `/api/v1/admin/stats` | Thống kê tổng quan | - |
+| `POST` | `/api/v1/admin/users/{id}/lock` | Khóa tài khoản người dùng | Path: `id` |
+| `POST` | `/api/v1/admin/users/{id}/unlock` | Mở khóa tài khoản | Path: `id` |
+
+### 4.6. Review
+
+| Method | Endpoint | Mô tả | Yêu cầu |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/bookings/{id}/review` | Trang viết review | Path: `id` |
+| `POST` | `/reviews` | Gửi review | Body: `bookingId`, `rating`, `comment` |
+
+### 4.7. Payment pipeline
+
+Với tích hợp VNPay, `POST /bookings` vẫn là entrypoint chính của flow thanh toán. Backend tạo booking/payment ở trạng thái pending rồi redirect user sang VNPay, thay vì tạo mock payment success ngay lập tức.
+
+### 4.8. Endpoint coverage note
+
+- Các form/link Thymeleaf hiện cover flow chính: đăng ký OTP, đăng nhập local/Google, search, property detail, booking, my bookings, host dashboard, admin users/bookings.
+- Một số REST API không được gọi trực tiếp từ template vì dành cho AJAX, client ngoài, hoặc future SPA/mobile: `/api/v1/host/properties/**`, `GET /api/v1/properties/**`, `GET /api/v1/amenities`, và các API booking ngoài `check-availability`.
+- Menu `Help` và `Wishlists` trong navbar là placeholder Post-MVP, chưa có route backend tương ứng.
+- `/home` là alias của `/`; UI ưu tiên link `/`.
+- `/bookings/{id}/payment` còn template/controller legacy nhưng không nằm trong flow VNPay chính; flow mới dùng VNPay checkout redirect và `/payments/vnpay/return`.
+
+## 5. Ví dụ request/response
+
+### 5.1. Kiểm tra khả dụng
+
+**Request:**
+```json
+POST /api/v1/bookings/check-availability
+Content-Type: application/json
+
+{
+  "propertyId": 1,
+  "checkIn": "2026-09-22",
+  "checkOut": "2026-09-25"
+}
+```
+
+**Response thành công:**
+```json
+{
+  "success": true,
+  "message": "Available",
+  "data": { "available": true },
+  "errorCode": null
+}
+```
+
+**Response thất bại (xung đột):**
+```json
+{
+  "success": false,
+  "message": "Property is not available for the selected dates.",
+  "data": {
+    "available": false,
+    "conflictingDates": [
+      { "checkIn": "2026-09-20", "checkOut": "2026-09-23" }
+    ]
+  },
+  "errorCode": "ERR_ROOM_NOT_AVAILABLE"
+}
+```
+
+### 5.2. Tạo booking
+
+**Request:**
+```
+POST /bookings
+Content-Type: application/x-www-form-urlencoded (hoặc JSON)
+propertyId=1&checkIn=2026-09-22&checkOut=2026-09-25&guests=2
+```
+
+**Response (redirect đến trang booking detail hoặc my bookings):**
+- Với mock payment hiện tại: nếu thành công, redirect `302` đến `/bookings/{id}`.
+- Với VNPay: nếu tạo payment thành công, redirect `302` đến VNPay checkout URL.
+- Nếu thất bại, hiển thị lỗi.
+
+### 5.3. Validate discount
+
+**Request:**
+```json
+POST /api/v1/discounts/validate
+Content-Type: application/json
+
+{
+  "propertyId": 1,
+  "checkIn": "2026-09-22",
+  "checkOut": "2026-09-25",
+  "guests": 2,
+  "code": "STAY10"
+}
+```
+
+**Response thành công:**
+```json
+{
+  "success": true,
+  "message": "Discount applied",
+  "data": {
+    "code": "STAY10",
+    "subtotalPrice": 1500000,
+    "discountAmount": 150000,
+    "totalPrice": 1350000
+  },
+  "errorCode": null
+}
+```
+
+Backend chỉ dùng response này để preview trên UI. Khi user submit booking, backend phải tính lại giá và validate lại discount; không tin số tiền từ frontend.
+
+### 5.4. VNPay IPN
+
+**Request:**
+```text
+GET /api/v1/payments/vnpay/ipn?vnp_TxnRef=...&vnp_Amount=135000000&vnp_ResponseCode=00&vnp_TransactionStatus=00&vnp_SecureHash=...
+```
+
+**Xử lý:**
+- Verify `vnp_SecureHash` bằng `VNPAY_HASH_SECRET`.
+- Tìm payment bằng `vnp_TxnRef`.
+- Kiểm tra `vnp_Amount / 100` khớp `payments.amount`.
+- Nếu `vnp_ResponseCode=00` và `vnp_TransactionStatus=00`, cập nhật payment `SUCCESS`, booking `CONFIRMED`, tăng `discount_codes.used_count` nếu có, rồi gửi email confirmed.
+- Nếu callback bị gửi lại, xử lý idempotent và không cộng usage nhiều lần.
+
+**Response VNPay:**
+```json
+{
+  "RspCode": "00",
+  "Message": "Confirm Success"
+}
+```
+
+Các mã chính:
+
+| RspCode | Ý nghĩa |
+| :--- | :--- |
+| `00` | Confirm Success |
+| `01` | Order not found |
+| `02` | Order already confirmed |
+| `04` | Invalid amount |
+| `97` | Invalid checksum |
+| `99` | Unknown error |
+
+### 5.5. Host chấp nhận booking (AJAX)
+
+**Request:**
+```
+POST /api/v1/host/bookings/5/accept
+```
+
+**Response thành công:**
+```json
+{
+  "success": true,
+  "message": "Booking accepted",
+  "data": null,
+  "errorCode": null
+}
+```
+
+**Response thất bại (không hợp lệ state):**
+```json
+{
+  "success": false,
+  "message": "Booking is not in PENDING state",
+  "data": null,
+  "errorCode": "ERR_INVALID_STATE"
+}
+```
+
+## 6. Authentication và Authorization
+
+- Sử dụng **session-based authentication** (Spring Security).
+- Các endpoint `/api/v1/**` yêu cầu xác thực, trừ `GET` public được khai báo cụ thể như đọc/search property. Không permit toàn bộ HTTP methods trên một public path pattern.
+- Request API thay đổi dữ liệu dùng session cookie phải gửi CSRF token. Thymeleaf cung cấp `${_csrf.token}` và `${_csrf.headerName}` để JavaScript gửi đúng header.
+- Lỗi security của `/api/**` luôn trả `ApiResponse` JSON: `ERR_UNAUTHORIZED` (401), `ERR_FORBIDDEN` (403), hoặc `ERR_CSRF` (403). Route MVC vẫn redirect anonymous user đến `/login` và trả HTML khi có lỗi.
+- Phân quyền:
+  - `/host/**` và `/api/v1/host/**` chỉ dành cho `HOST` hoặc `ADMIN`.
+  - `/admin/**` và `/api/v1/admin/**` chỉ dành cho `ADMIN`.
+  - `/my-bookings`, `/bookings/**` yêu cầu đăng nhập (bất kỳ role nào, nhưng sẽ kiểm tra ownership).
+- Sử dụng `@PreAuthorize` hoặc cấu hình trong `SecurityConfig` để enforce.
+- Public property detail chỉ trả listing `ACTIVE`. Mọi mutation Host kiểm tra ownership bằng `principal.id`; ID không thuộc Host trả 404 để tránh enumeration.
+- Listing mới luôn là `DRAFT`; chỉ chuyển `ACTIVE` khi có cover. `DELETE` property là archive sang `INACTIVE` để giữ lịch sử cho Booking/Review.
+- Upload chỉ nhận JPEG/PNG hợp lệ, giới hạn dung lượng/số lượng/pixel; file mới được xóa khi transaction rollback và file cũ chỉ bị xóa sau khi database commit.
+
+## 7. Error handling
+
+Lỗi REST controller được xử lý trong `ApiExceptionHandler` và trả `ApiResponse`. Lỗi MVC controller được xử lý trong `MvcExceptionHandler` và trả Thymeleaf error page. Lỗi phát sinh trong Spring Security filter chain do `ApiAuthenticationEntryPoint`/`ApiAccessDeniedHandler` xử lý.
+
+Các custom exception:
+- `ResourceNotFoundException`: 404
+- `BusinessException`: 409 hoặc 400
+- `InvalidStateTransitionException`: 409
+- `AuthenticationException`: 401
+- `AccessDeniedException`: 403
+
+## 8. Tài liệu liên quan
+
+- [Quy chuẩn API trong Rules.md](../contributors/Rules.md)
+- [Luồng nghiệp vụ sơ bộ](0_DemoSystem.md)
