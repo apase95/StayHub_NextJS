@@ -1,0 +1,85 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-rating: var(--rating);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-card: var(--radius-card);
+  --radius-control: var(--radius-control);
+  --radius-pill: var(--radius-pill);
+  --font-sans: var(--font-inter), "Helvetica Neue", Arial, sans-serif;
+}
+
+:root {
+  --background: #f9fafb;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+  --primary: #ff6b6b;
+  --primary-foreground: #ffffff;
+  --secondary: #f9fafb;
+  --secondary-foreground: #111827;
+  --muted: #f9fafb;
+  --muted-foreground: #6b7280;
+  --accent: #ffe5e5;
+  --accent-foreground: #111827;
+  --destructive: #dc2626;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #ff6b6b;
+  --success: #16a34a;
+  --warning: #d97706;
+  --rating: #f59e0b;
+  --radius: 0.75rem;
+  --radius-card: 12px;
+  --radius-control: 8px;
+  --radius-pill: 999px;
+  --color-primary-500: #ff6b6b;
+  --color-primary-600: #e85555;
+  --color-text-900: #111827;
+  --color-text-gray: #6b7280;
+  --color-bg-white: #ffffff;
+  --color-bg-light: #f9fafb;
+  --color-border: #e5e7eb;
+  --color-success-500: #16a34a;
+  --color-warning-500: #d97706;
+  --color-rating-500: #f59e0b;
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
