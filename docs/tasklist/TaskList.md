@@ -77,15 +77,15 @@ StayHub/
 
 - [x] **TSK-001** `[INFRA]` Khởi tạo Git repo, tạo branch `main`/`dev`, add Collaborator cho cả 3 người, cấu hình branch protection rule (require PR review trước khi merge vào `dev`). *(Estimate: 0.5h · Priority: Urgent · Blocking ALL)*
 
-- [ ] **TSK-002** `[INFRA]` Khởi tạo Next.js 15 App Router với TypeScript strict: `tsconfig.json` (`"strict": true`, path alias `@/*`), cài pnpm, khởi tạo `package.json`. *(Estimate: 1h · Priority: Urgent · Blocking ALL)*
+- [x] **TSK-002** `[INFRA]` Khởi tạo Next.js 15 App Router với TypeScript strict: `tsconfig.json` (`"strict": true`, path alias `@/*`), cài pnpm, khởi tạo `package.json`. *(Estimate: 1h · Priority: Urgent · Blocking ALL)*
 
-- [ ] **TSK-003** `[INFRA]` Cài và cấu hình Tailwind CSS v4, thêm CSS variables màu theo `UXUI_DesignSystem.md` vào `globals.css`. Setup font Inter. *(Estimate: 1h · Priority: Urgent · Blocking FE)*
+- [x] **TSK-003** `[INFRA]` Cài và cấu hình Tailwind CSS v4, thêm CSS variables màu theo `UXUI_DesignSystem.md` vào `globals.css`. Setup font Inter. *(Estimate: 1h · Priority: Urgent · Blocking FE)*
 
-- [ ] **TSK-004** `[INFRA]` Cài shadcn/ui, tạo `components.json`, cài các component nền: `Button`, `Input`, `Card`, `Badge`, `Dialog`, `Select`, `Tabs`, `Skeleton`. *(Estimate: 1h · Priority: Urgent · Blocking FE)*
+- [x] **TSK-004** `[INFRA]` Cài shadcn/ui, tạo `components.json`, cài các component nền: `Button`, `Input`, `Card`, `Badge`, `Dialog`, `Select`, `Tabs`, `Skeleton`. *(Estimate: 1h · Priority: Urgent · Blocking FE)*
 
-- [ ] **TSK-005** `[INFRA]` `docker-compose.yml` (service `db`: PostgreSQL 16 + volume), tạo `.env.example` với toàn bộ biến môi trường cần thiết cho cả project. *(Estimate: 1h · Priority: Urgent · Blocking ALL)*
+- [x] **TSK-005** `[INFRA]` `docker-compose.yml` (service `db`: PostgreSQL 16 + volume), tạo `.env.example` với toàn bộ biến môi trường cần thiết cho cả project. *(Estimate: 1h · Priority: Urgent · Blocking ALL)*
 
-- [ ] **TSK-006** `[INFRA]` Cấu hình Prisma: `prisma/schema.prisma` (datasource PostgreSQL, generator TypeScript), Prisma client singleton tại `src/lib/prisma.ts`. *(Estimate: 0.5h · Priority: Urgent · Blocking INFRA schema tasks)*
+- [x] **TSK-006** `[INFRA]` Cấu hình Prisma: `prisma/schema.prisma` (datasource PostgreSQL, generator TypeScript), Prisma client singleton tại `src/lib/prisma.ts`. *(Estimate: 0.5h · Priority: Urgent · Blocking INFRA schema tasks)*
 
 - [ ] **TSK-007** `[INFRA]` `src/app/providers.tsx`: `SessionProvider` (NextAuth) + `QueryClientProvider` (React Query v5). Cài React Query, NextAuth, bcryptjs. Root layout `src/app/layout.tsx` bọc Providers. *(Estimate: 1h · Priority: Urgent · Blocking FE)*
 
