@@ -8,6 +8,7 @@ import type { Role } from "@/types";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
+  secret: process.env.APP_SECRET ?? process.env.NEXTAUTH_SECRET,
   pages: { signIn: "/login" },
   providers: [
     Google,
