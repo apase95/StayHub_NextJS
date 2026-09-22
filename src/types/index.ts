@@ -4,6 +4,7 @@ export const Role = {
   ADMIN: "ADMIN",
 } as const;
 export type Role = (typeof Role)[keyof typeof Role];
+export type UserRole = Role;
 
 export const BookingStatus = {
   PENDING_PAYMENT: "PENDING_PAYMENT",
