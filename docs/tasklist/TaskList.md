@@ -103,11 +103,11 @@ StayHub/
 
 ### INFRA làm trước
 
-- [ ] **TSK-012** `[INFRA]` Prisma schema model `User` (id, email, passwordHash, fullName, phone, role ENUM, status, provider, emailVerified, createdAt, updatedAt) + migration `create_users`. Expose type `UserRole = "GUEST" | "HOST" | "ADMIN"` trong `src/types/index.ts`. *(Estimate: 1h · Priority: Urgent · Blocking TSK-013, TSK-014)*
+- [x] **TSK-012** `[INFRA]` Prisma schema model `User` (id, email, passwordHash, fullName, phone, role ENUM, status, provider, emailVerified, createdAt, updatedAt) + migration `create_users`. Expose type `UserRole = "GUEST" | "HOST" | "ADMIN"` trong `src/types/index.ts`. *(Estimate: 1h · Priority: Urgent · Blocking TSK-013, TSK-014)*
 
-- [ ] **TSK-013** `[INFRA]` `src/lib/auth.ts`: NextAuth v5 config — Credentials provider (bcryptjs verify, lookup user từ Prisma), Google OAuth provider (auto-provision user mới, merge nếu email đã tồn tại), callbacks `jwt` + `session` đính kèm `role` và `id`, augment `src/types/next-auth.d.ts`. *(Estimate: 2.5h · Priority: Urgent · Blocking TSK-014, TSK-015, TSK-020)*
+- [x] **TSK-013** `[INFRA]` `src/lib/auth.ts`: NextAuth v5 config — Credentials provider (bcryptjs verify, lookup user từ Prisma), Google OAuth provider (auto-provision user mới, merge nếu email đã tồn tại), callbacks `jwt` + `session` đính kèm `role` và `id`, augment `src/types/next-auth.d.ts`. *(Estimate: 2.5h · Priority: Urgent · Blocking TSK-014, TSK-015, TSK-020)*
 
-- [ ] **TSK-014** `[INFRA]` `middleware.ts` bảo vệ route theo role: `/host/**` → HOST/ADMIN, `/admin/**` → ADMIN, `/bookings/**` + `/properties/[id]/book/**` → phải đăng nhập; redirect về `/login` nếu không đủ điều kiện. *(Estimate: 1h · Priority: Urgent · Blocking FE auth pages)*
+- [x] **TSK-014** `[INFRA]` `middleware.ts` bảo vệ route theo role: `/host/**` → HOST/ADMIN, `/admin/**` → ADMIN, `/bookings/**` + `/properties/[id]/book/**` → phải đăng nhập; redirect về `/login` nếu không đủ điều kiện. *(Estimate: 1h · Priority: Urgent · Blocking FE auth pages)*
 
 ### BE làm tiếp
 
