@@ -111,11 +111,11 @@ StayHub/
 
 ### BE làm tiếp
 
-- [ ] **TSK-015** `[BE]` `src/schemas/auth.schema.ts`: `registerSchema` (email, password min 8 ký tự, fullName), `loginSchema`. `src/app/api/auth/[...nextauth]/route.ts` (NextAuth handler). `src/app/api/auth/register/route.ts`: validate Zod → check email duplicate → bcrypt hash → tạo User GUEST. *(Estimate: 2h · Priority: Urgent · Blocking TSK-016)*
+- [x] **TSK-015** `[BE]` `src/schemas/auth.schema.ts`: `registerSchema` (email, password min 8 ký tự, fullName), `loginSchema`. `src/app/api/auth/[...nextauth]/route.ts` (NextAuth handler). `src/app/api/auth/register/route.ts`: validate Zod → check email duplicate → bcrypt hash → tạo User GUEST. *(Estimate: 2h · Priority: Urgent · Blocking TSK-016)*
 
-- [ ] **TSK-016** `[BE]` Email OTP khi đăng ký: gọi `src/lib/email.ts` (do INFRA cung cấp ở TSK-031), lưu OTP + TTL 10 phút vào bảng `verification_tokens` (thêm model vào schema qua INFRA), `POST /api/auth/verify-otp` để xác minh. *(Estimate: 2h · Priority: Medium · phụ thuộc TSK-031)*
+- [x] **TSK-016** `[BE]` Email OTP khi đăng ký: gọi `src/lib/email.ts` (do INFRA cung cấp ở TSK-031), lưu OTP + TTL 10 phút vào bảng `verification_tokens` (thêm model vào schema qua INFRA), `POST /api/auth/verify-otp` để xác minh. *(Estimate: 2h · Priority: Medium · phụ thuộc TSK-031)*
 
-- [ ] **TSK-017** `[BE]` Admin Route Handlers `src/app/api/admin/`: stats tổng quan (tổng users, active hosts, bookings hôm nay, platform revenue từ Prisma aggregation), danh sách booking toàn hệ thống (search theo mã/tên, filter status, pagination). `PATCH /api/admin/users/[id]/status` (lock/unlock). *(Estimate: 3h · Priority: Medium · phụ thuộc TSK-034, TSK-035)*
+- [x] **TSK-017** `[BE]` Admin Route Handlers `src/app/api/admin/`: stats tổng quan (tổng users, active hosts, bookings hôm nay, platform revenue từ Prisma aggregation), danh sách booking toàn hệ thống (search theo mã/tên, filter status, pagination). `PATCH /api/admin/users/[id]/status` (lock/unlock). *(Estimate: 3h · Priority: Medium · phụ thuộc TSK-034, TSK-035)*
 
 ### FE làm tiếp
 
