@@ -95,7 +95,7 @@ StayHub/
 
 - [x] **TSK-010** `[BE]` `src/lib/api-response.ts`: type `ApiResponse<T>`, hàm `ok()` và `fail()` theo chuẩn `Rules.md`. `src/types/index.ts`: `Role`, `BookingStatus`, `PaymentStatus`, `PropertyType`, `AmenityType`. *(Estimate: 1h · Priority: Urgent · Blocking BE)*
 
-- [ ] **TSK-011** `[FE]` Khung layout chung: `src/components/common/Navbar.tsx` + `Footer.tsx` (placeholder, chưa cần login state). *(Estimate: 1.5h · Priority: High · có thể làm song song TSK-007)*
+- [x] **TSK-011** `[FE]` Khung layout chung: `src/components/common/Navbar.tsx` + `Footer.tsx` (placeholder, chưa cần login state). *(Estimate: 1.5h · Priority: High · có thể làm song song TSK-007)*
 
 ---
 

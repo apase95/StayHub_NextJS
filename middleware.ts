@@ -12,11 +12,19 @@ export default auth((req) => {
     return Response.redirect(new URL("/", req.url));
   }
 
-  if ((pathname.startsWith("/bookings") || pathname.includes("/book/")) && !req.auth) {
+  if (
+    (pathname.startsWith("/bookings") || pathname.includes("/book/")) &&
+    !req.auth
+  ) {
     return Response.redirect(new URL("/login", req.url));
   }
 });
 
 export const config = {
-  matcher: ["/host/:path*", "/admin/:path*", "/bookings/:path*", "/properties/:path*/book/:path*"],
+  matcher: [
+    "/host/:path*",
+    "/admin/:path*",
+    "/bookings/:path*",
+    "/properties/:path*/book/:path*",
+  ],
 };

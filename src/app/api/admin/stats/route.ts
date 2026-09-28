@@ -6,8 +6,10 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   const session = await auth();
-  if (!session) return NextResponse.json(fail("Chưa đăng nhập"), { status: 401 });
-  if (session.user.role !== "ADMIN") return NextResponse.json(fail("Không có quyền"), { status: 403 });
+  if (!session)
+    return NextResponse.json(fail("Chưa đăng nhập"), { status: 401 });
+  if (session.user.role !== "ADMIN")
+    return NextResponse.json(fail("Không có quyền"), { status: 403 });
 
   const [totalUsers, activeHosts] = await Promise.all([
     prisma.user.count(),
@@ -15,5 +17,7 @@ export async function GET() {
   ]);
 
   // ponytail: booking/payment schema lands in TSK-033/034; replace zeros with Prisma aggregates then.
-  return NextResponse.json(ok({ totalUsers, activeHosts, bookingsToday: 0, platformRevenue: 0 }));
+  return NextResponse.json(
+    ok({ totalUsers, activeHosts, bookingsToday: 0, platformRevenue: 0 })
+  );
 }

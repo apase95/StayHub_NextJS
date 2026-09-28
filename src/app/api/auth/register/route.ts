@@ -8,10 +8,16 @@ import { registerSchema } from "@/schemas/auth.schema";
 
 export async function POST(request: Request) {
   const parsed = registerSchema.safeParse(await request.json());
-  if (!parsed.success) return NextResponse.json(fail("Dữ liệu không hợp lệ"), { status: 400 });
+  if (!parsed.success)
+    return NextResponse.json(fail("Dữ liệu không hợp lệ"), { status: 400 });
 
-  const exists = await prisma.user.findUnique({ where: { email: parsed.data.email } });
-  if (exists) return NextResponse.json(fail("Email đã tồn tại", "ERR_EMAIL_EXISTS"), { status: 409 });
+  const exists = await prisma.user.findUnique({
+    where: { email: parsed.data.email },
+  });
+  if (exists)
+    return NextResponse.json(fail("Email đã tồn tại", "ERR_EMAIL_EXISTS"), {
+      status: 409,
+    });
 
   const otp = String(Math.floor(100000 + Math.random() * 900000));
   const user = await prisma.user.create({
