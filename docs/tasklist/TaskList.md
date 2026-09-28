@@ -133,9 +133,9 @@ StayHub/
 
 ### INFRA làm trước
 
-- [ ] **TSK-022** `[INFRA]` Prisma schema models: `Property`, `PropertyImage`, `Amenity`, `PropertyAmenity`. Property fields: title, description, type ENUM, city, address, pricePerNight, cleaningFee, maxGuests, bedrooms, beds, bathrooms, ratingAvg, status ENUM, hostId → relation User. Migration `create_properties`. *(Estimate: 2h · Priority: Urgent · Blocking TSK-023)*
+- [x] **TSK-022** `[INFRA]` Prisma schema models: `Property`, `PropertyImage`, `Amenity`, `PropertyAmenity`. Property fields: title, description, type ENUM, city, address, pricePerNight, cleaningFee, maxGuests, bedrooms, beds, bathrooms, ratingAvg, status ENUM, hostId → relation User. Migration `create_properties`. *(Estimate: 2h · Priority: Urgent · Blocking TSK-023)*
 
-- [ ] **TSK-023** `[INFRA]` `src/lib/cloudinary.ts`: `uploadImage(buffer, folder)` → trả `{ url, publicId }`, `deleteImage(publicId)`. Feature flag `UPLOAD_USE_CLOUDINARY` — nếu false, lưu file vào `public/uploads/` và trả local URL. *(Estimate: 2h · Priority: High · Blocking TSK-024)*
+- [x] **TSK-023** `[INFRA]` `src/lib/cloudinary.ts`: `uploadImage(buffer, folder)` → trả `{ url, publicId }`, `deleteImage(publicId)`. Feature flag `UPLOAD_USE_CLOUDINARY` — nếu false, lưu file vào `public/uploads/` và trả local URL. *(Estimate: 2h · Priority: High · Blocking TSK-024)*
 
 ### BE làm tiếp
 
