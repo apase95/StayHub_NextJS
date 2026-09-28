@@ -1,0 +1,20 @@
+import { NextResponse } from "next/server";
+
+import { fail, ok } from "@/lib/api-response";
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { mapProperty } from "@/services/property.service";
+
+export async function GET() {
+  const session = await auth();
+  if (!session) return NextResponse.json(fail("Chưa đăng nhập"), { status: 401 });
+  if (session.user.role !== "HOST" && session.user.role !== "ADMIN") return NextResponse.json(fail("Không có quyền"), { status: 403 });
+
+  const properties = await prisma.property.findMany({
+    where: { hostId: session.user.id },
+    include: { images: { orderBy: { displayOrder: "asc" } }, amenities: { include: { amenity: true } }, host: { select: { id: true, fullName: true } } },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return NextResponse.json(ok(properties.map(mapProperty)));
+}
