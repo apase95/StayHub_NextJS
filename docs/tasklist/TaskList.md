@@ -176,24 +176,24 @@ StayHub/
 
 ### INFRA làm trước
 
-- [ ] **TSK-033** `[INFRA]` Prisma schema models:
+- [x] **TSK-033** `[INFRA]` Prisma schema models:
     - `Booking`: id, propertyId, guestId, checkInDate, checkOutDate, guests, nightlyPrice, cleaningFee, serviceFee, subtotalPrice, discountCodeId?, discountAmount, totalPrice, status ENUM, cancelledAt?, createdAt, updatedAt
     - `DiscountCode`: id, code unique, type ENUM (PERCENT/FIXED), value, cap?, minimumAmount, startDate, endDate, usageLimit?, usedCount, isActive, createdAt
     - Migration `create_bookings_and_discounts`.
     *(Estimate: 1.5h · Priority: Urgent · Blocking TSK-036, TSK-037)*
 
-- [ ] **TSK-034** `[INFRA]` Prisma schema model `Payment`: id, bookingId unique, amount, currency (default "VND"), paymentMethod, status ENUM, providerTxnRef?, providerTransactionNo?, rawResponse Json?, paidAt?, createdAt. Migration `create_payments`. *(Estimate: 1h · Priority: Urgent · Blocking TSK-039)*
+- [x] **TSK-034** `[INFRA]` Prisma schema model `Payment`: id, bookingId unique, amount, currency (default "VND"), paymentMethod, status ENUM, providerTxnRef?, providerTransactionNo?, rawResponse Json?, paidAt?, createdAt. Migration `create_payments`. *(Estimate: 1h · Priority: Urgent · Blocking TSK-039)*
 
-- [ ] **TSK-035** `[INFRA]` Prisma schema model `Review`: id, bookingId unique, propertyId, guestId, rating Int (1-5), comment, createdAt, updatedAt. Migration `create_reviews`. *(Estimate: 0.5h · Priority: Medium · Blocking TSK-043)*
+- [x] **TSK-035** `[INFRA]` Prisma schema model `Review`: id, bookingId unique, propertyId, guestId, rating Int (1-5), comment, createdAt, updatedAt. Migration `create_reviews`. *(Estimate: 0.5h · Priority: Medium · Blocking TSK-043)*
 
-- [ ] **TSK-036** `[INFRA]` `src/lib/vnpay.ts`:
+- [x] **TSK-036** `[INFRA]` `src/lib/vnpay.ts`:
     - `buildPaymentUrl(params)` — build URL redirect sang VNPay: sort params theo alphabet, nối chuỗi query, ký HMAC-SHA512 với `VNPAY_HASH_SECRET`, append `vnp_SecureHash`
     - `verifyIpn(query)` — tách `vnp_SecureHash` ra, verify lại hash, so sánh `vnp_Amount`
     - `verifyReturn(query)` — tương tự, chỉ dùng cho UX (không làm source of truth)
     - Đọc config từ env: `VNPAY_TMN_CODE`, `VNPAY_HASH_SECRET`, `VNPAY_PAY_URL`, `VNPAY_RETURN_URL`, `VNPAY_IPN_URL`
     *(Estimate: 2.5h · Priority: High · Blocking TSK-039, TSK-040)*
 
-- [ ] **TSK-037** `[INFRA]` `src/lib/email.ts` (Nodemailer Gmail SMTP): `sendOtpEmail(to, otp)`, `sendBookingConfirmed(to, bookingDetails)`, `sendBookingCancelled(to, bookingDetails)` — HTML template inline. Config từ env: `MAIL_HOST`, `MAIL_PORT`, `MAIL_USER`, `MAIL_PASS`, `MAIL_FROM`. *(Estimate: 2h · Priority: Medium · Blocking TSK-016, TSK-040)*
+- [x] **TSK-037** `[INFRA]` `src/lib/email.ts` (Nodemailer Gmail SMTP): `sendOtpEmail(to, otp)`, `sendBookingConfirmed(to, bookingDetails)`, `sendBookingCancelled(to, bookingDetails)` — HTML template inline. Config từ env: `MAIL_HOST`, `MAIL_PORT`, `MAIL_USER`, `MAIL_PASS`, `MAIL_FROM`. *(Estimate: 2h · Priority: Medium · Blocking TSK-016, TSK-040)*
 
 ### BE làm tiếp
 
