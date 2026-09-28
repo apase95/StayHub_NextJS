@@ -197,14 +197,14 @@ StayHub/
 
 ### BE làm tiếp
 
-- [ ] **TSK-038** `[BE]` `src/services/booking.service.ts`:
+- [x] **TSK-038** `[BE]` `src/services/booking.service.ts`:
     - `checkOverlap(propertyId, checkIn, checkOut)` — Prisma query tìm booking PENDING_PAYMENT/CONFIRMED trùng ngày
     - `calculatePrice(property, checkIn, checkOut)` → `{ nightlyPrice, nights, cleaningFee, serviceFee, subtotalPrice, totalPrice }`
     - `createBooking(data, session)` — gọi checkOverlap → tính giá → validate + snapshot discount → tạo Booking PENDING_PAYMENT + Payment PENDING trong transaction
     - `cancelBooking(bookingId, userId)` — kiểm tra ownership + state hợp lệ → cập nhật CANCELLED
     *(Estimate: 3h · Priority: Urgent · Blocking TSK-039, TSK-040)*
 
-- [ ] **TSK-039** `[BE]` Booking Route Handlers `src/app/api/bookings/`:
+- [x] **TSK-039** `[BE]` Booking Route Handlers `src/app/api/bookings/`:
     - `POST /api/bookings/check-availability` — gọi `checkOverlap`, trả `ERR_ROOM_NOT_AVAILABLE` nếu trùng
     - `POST /api/bookings` — gọi `createBooking` → gọi `vnpay.buildPaymentUrl()` → trả `{ bookingId, vnpayUrl }`
     - `GET /api/bookings` — danh sách booking của user đang login, filter by status
@@ -212,17 +212,17 @@ StayHub/
     - `PATCH /api/bookings/[id]/cancel` — gọi `cancelBooking`
     *(Estimate: 2.5h · Priority: Urgent · phụ thuộc TSK-036, TSK-038)*
 
-- [ ] **TSK-040** `[BE]` `src/services/discount.service.ts` + Route Handler:
+- [x] **TSK-040** `[BE]` `src/services/discount.service.ts` + Route Handler:
     - `validateDiscount(code, subtotal)` — check active, trong thời hạn, usedCount < usageLimit, subtotal >= minimumAmount → tính `discountAmount` (PERCENT: `min(value% × subtotal, cap)`, FIXED: `min(value, subtotal)`)
     - `POST /api/discounts/validate` — preview discount, không tăng usedCount
     *(Estimate: 2h · Priority: High · phụ thuộc TSK-033)*
 
-- [ ] **TSK-041** `[BE]` Payment Route Handlers:
+- [x] **TSK-041** `[BE]` Payment Route Handlers:
     - `GET /api/payments/vnpay/ipn` — verify checksum (`vnpay.verifyIpn`), verify amount khớp với Payment record, idempotent update: payment SUCCESS/FAILED + booking CONFIRMED/CANCELLED + tăng `discountCode.usedCount` (nếu có) trong một Prisma transaction, gọi `email.sendBookingConfirmed` sau success; trả `{ RspCode: "00", Message: "OK" }` cho VNPay
     - `GET /api/payments/bookings/[bookingId]/status` — trả payment status để FE polling
     *(Estimate: 3h · Priority: High · phụ thuộc TSK-036, TSK-037, TSK-038)*
 
-- [ ] **TSK-042** `[BE]` `src/services/review.service.ts` + Route Handlers:
+- [x] **TSK-042** `[BE]` `src/services/review.service.ts` + Route Handlers:
     - `POST /api/reviews` — chỉ cho phép khi booking COMPLETED + booking chưa có review + user là guest của booking → tạo Review → cập nhật `property.ratingAvg` (AVG query)
     - `GET /api/properties/[id]/reviews` — danh sách review kèm tên guest, rating, comment, createdAt
     *(Estimate: 2h · Priority: Medium · phụ thuộc TSK-035)*

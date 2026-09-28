@@ -31,8 +31,18 @@ export async function searchProperties(query: z.infer<typeof searchSchema>) {
       ? { pricePerNight: { ...(query.minPrice !== undefined ? { gte: query.minPrice } : {}), ...(query.maxPrice !== undefined ? { lte: query.maxPrice } : {}) } }
       : {}),
     ...(amenities.length ? { amenities: { some: { amenityId: { in: amenities } } } } : {}),
+    ...(query.checkIn && query.checkOut
+      ? {
+          bookings: {
+            none: {
+              status: { in: ["PENDING_PAYMENT", "CONFIRMED"] },
+              checkInDate: { lt: new Date(query.checkOut) },
+              checkOutDate: { gt: new Date(query.checkIn) },
+            },
+          },
+        }
+      : {}),
   };
 
-  // ponytail: exclude overlapping bookings here after Booking model lands in TSK-033.
   return listProperties(where, query.page, query.limit);
 }
