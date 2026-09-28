@@ -139,7 +139,7 @@ StayHub/
 
 ### BE làm tiếp
 
-- [ ] **TSK-024** `[BE]` `src/schemas/property.schema.ts`. `src/services/property.service.ts` + Route Handlers `src/app/api/properties/`:
+- [x] **TSK-024** `[BE]` `src/schemas/property.schema.ts`. `src/services/property.service.ts` + Route Handlers `src/app/api/properties/`:
     - `GET /api/properties` — public listing (chỉ ACTIVE, có filter cơ bản)
     - `GET /api/properties/[id]` — public detail kèm images + amenities + ratingAvg
     - `POST /api/properties` — tạo mới (HOST only, kiểm tra session)
@@ -148,15 +148,15 @@ StayHub/
     
     Không trả Prisma model trực tiếp; map qua response type bỏ field nhạy cảm. *(Estimate: 3h · Priority: Urgent · Blocking TSK-025, TSK-026)*
 
-- [ ] **TSK-025** `[BE]` `src/app/api/properties/[id]/images/route.ts`: `POST` upload ảnh (multipart/form-data → gọi `cloudinary.ts`), `DELETE` xoá ảnh theo publicId, `PATCH` set ảnh cover. Validate đuôi file (JPEG/PNG) và kích thước. *(Estimate: 2h · Priority: High · phụ thuộc TSK-023)*
+- [x] **TSK-025** `[BE]` `src/app/api/properties/[id]/images/route.ts`: `POST` upload ảnh (multipart/form-data → gọi `cloudinary.ts`), `DELETE` xoá ảnh theo publicId, `PATCH` set ảnh cover. Validate đuôi file (JPEG/PNG) và kích thước. *(Estimate: 2h · Priority: High · phụ thuộc TSK-023)*
 
-- [ ] **TSK-026** `[BE]` `src/app/api/search/route.ts` + `src/services/search.service.ts`:
+- [x] **TSK-026** `[BE]` `src/app/api/search/route.ts` + `src/services/search.service.ts`:
     - Query params: `location`, `checkIn`, `checkOut`, `guests`, `minPrice`, `maxPrice`, `type`, `bedrooms`, `amenities[]`, `minRating`, `sort` (price-asc/price-desc/rating-desc), `page`, `limit`
     - **Bắt buộc:** loại trừ property có booking CONFIRMED/PENDING_PAYMENT trùng khoảng ngày bằng Prisma subquery
     - Trả `{ properties, total, page, totalPages }`
     *(Estimate: 3.5h · Priority: Urgent · Blocking TSK-027)*
 
-- [ ] **TSK-027** `[BE]` Host API `src/app/api/host/`: stats (tổng booking của host, tổng revenue, số property đang ACTIVE), danh sách property của host, danh sách booking requests theo từng property. *(Estimate: 2.5h · Priority: High · phụ thuộc TSK-034)*
+- [x] **TSK-027** `[BE]` Host API `src/app/api/host/`: stats (tổng booking của host, tổng revenue, số property đang ACTIVE), danh sách property của host, danh sách booking requests theo từng property. *(Estimate: 2.5h · Priority: High · phụ thuộc TSK-034)*
 
 ### FE làm tiếp
 
