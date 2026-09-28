@@ -1,0 +1,374 @@
+"use client";
+
+import * as React from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
+import {
+  Search,
+  Globe,
+  Menu,
+  User,
+  Home,
+  LogOut,
+  Calendar,
+  Shield,
+  Building2,
+  X,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+
+export function Navbar() {
+  const pathname = usePathname();
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = React.useState(false);
+  const menuRef = React.useRef<HTMLDivElement>(null);
+
+  // Close dropdown on click outside
+  React.useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Close mobile drawer on route change
+  React.useEffect(() => {
+    setIsMobileNavOpen(false);
+    setIsMenuOpen(false);
+  }, [pathname]);
+
+  const userRole = session?.user?.role;
+  const isAuthPage =
+    pathname.startsWith("/login") || pathname.startsWith("/register");
+  const isDashboardPage =
+    pathname.startsWith("/admin") || pathname.startsWith("/host");
+
+  const handleSearchClick = () => {
+    router.push("/search");
+  };
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/85">
+      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* 1. Left: Brand Logo */}
+        <div className="flex items-center gap-2">
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-primary transition-opacity hover:opacity-90"
+          >
+            <div className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+              <Home className="size-6 stroke-[2.5]" />
+            </div>
+            <span className="text-2xl font-bold tracking-tight text-primary">
+              StayHub
+            </span>
+          </Link>
+
+          {isDashboardPage && (
+            <Badge
+              variant="outline"
+              className="ml-2 hidden sm:inline-flex text-xs font-semibold"
+            >
+              {pathname.startsWith("/admin")
+                ? "Admin Portal"
+                : "Host Dashboard"}
+            </Badge>
+          )}
+        </div>
+
+        {/* 2. Center: Search Pill (Hidden on Auth Pages) */}
+        {!isAuthPage && !isDashboardPage && (
+          <div className="hidden md:flex items-center">
+            <button
+              onClick={handleSearchClick}
+              type="button"
+              className="group flex items-center rounded-full border border-border bg-card py-2 pl-5 pr-2 text-sm font-medium shadow-sm transition-all hover:border-muted-foreground/30 hover:shadow-md"
+            >
+              <span className="font-semibold text-foreground">Mọi nơi</span>
+              <span className="mx-3 h-4 w-px bg-border" />
+              <span className="font-semibold text-foreground">Mọi tuần</span>
+              <span className="mx-3 h-4 w-px bg-border" />
+              <span className="text-muted-foreground">Thêm khách</span>
+              <div className="ml-3 flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform group-hover:scale-105">
+                <Search className="size-4 stroke-[2.5]" />
+              </div>
+            </button>
+          </div>
+        )}
+
+        {/* 3. Right: Navigation, Host Link, User Menu */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {!isAuthPage && (
+            <>
+              <Link
+                href="/host"
+                className="hidden rounded-full px-3.5 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-muted md:inline-block"
+              >
+                Đón tiếp khách
+              </Link>
+
+              <button
+                type="button"
+                aria-label="Ngôn ngữ & Tiền tệ"
+                className="hidden rounded-full p-2 text-foreground transition-colors hover:bg-muted md:inline-flex"
+              >
+                <Globe className="size-5" />
+              </button>
+            </>
+          )}
+
+          {/* User Menu Dropdown Button */}
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              type="button"
+              className={cn(
+                "flex items-center gap-2.5 rounded-full border border-border bg-card p-1.5 pl-3 transition-all hover:shadow-md",
+                isMenuOpen && "shadow-md"
+              )}
+              aria-expanded={isMenuOpen}
+              aria-label="Menu tài khoản"
+            >
+              <Menu className="size-4 text-foreground" />
+              <div className="flex size-7 items-center justify-center rounded-full bg-muted text-muted-foreground">
+                <User className="size-4" />
+              </div>
+            </button>
+
+            {/* Dropdown Menu */}
+            {isMenuOpen && (
+              <div className="absolute right-0 mt-2 w-64 origin-top-right rounded-card border border-border bg-card py-2 shadow-lg ring-1 ring-black/5 animate-in fade-in-0 zoom-in-95">
+                {status === "authenticated" && session?.user ? (
+                  <>
+                    <div className="border-b border-border px-4 py-3">
+                      <p className="text-sm font-semibold text-foreground">
+                        {session.user.name || "Người dùng StayHub"}
+                      </p>
+                      <p className="truncate text-xs text-muted-foreground">
+                        {session.user.email}
+                      </p>
+                      {userRole && (
+                        <div className="mt-1.5">
+                          <Badge variant="secondary" className="text-[10px]">
+                            {userRole}
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="py-1">
+                      <Link
+                        href="/bookings"
+                        className="flex items-center gap-2.5 px-4 py-2 text-sm text-foreground hover:bg-muted"
+                      >
+                        <Calendar className="size-4 text-muted-foreground" />
+                        Chuyến đi của tôi
+                      </Link>
+
+                      {(userRole === "HOST" || userRole === "ADMIN") && (
+                        <Link
+                          href="/host"
+                          className="flex items-center gap-2.5 px-4 py-2 text-sm text-foreground hover:bg-muted"
+                        >
+                          <Building2 className="size-4 text-muted-foreground" />
+                          Bảng điều khiển Host
+                        </Link>
+                      )}
+
+                      {userRole === "ADMIN" && (
+                        <Link
+                          href="/admin"
+                          className="flex items-center gap-2.5 px-4 py-2 text-sm text-foreground hover:bg-muted"
+                        >
+                          <Shield className="size-4 text-muted-foreground" />
+                          Quản trị hệ thống
+                        </Link>
+                      )}
+                    </div>
+
+                    <div className="border-t border-border pt-1">
+                      <button
+                        onClick={() => signOut({ callbackUrl: "/" })}
+                        type="button"
+                        className="flex w-full items-center gap-2.5 px-4 py-2 text-left text-sm text-destructive hover:bg-destructive/10"
+                      >
+                        <LogOut className="size-4" />
+                        Đăng xuất
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="py-1">
+                      <Link
+                        href="/register"
+                        className="block px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted"
+                      >
+                        Đăng ký
+                      </Link>
+                      <Link
+                        href="/login"
+                        className="block px-4 py-2 text-sm text-foreground hover:bg-muted"
+                      >
+                        Đăng nhập
+                      </Link>
+                    </div>
+                    <div className="border-t border-border py-1">
+                      <Link
+                        href="/host"
+                        className="block px-4 py-2 text-sm text-foreground hover:bg-muted"
+                      >
+                        Đón tiếp khách
+                      </Link>
+                      <Link
+                        href="/search"
+                        className="block px-4 py-2 text-sm text-foreground hover:bg-muted"
+                      >
+                        Khám phá chỗ ở
+                      </Link>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Menu Hamburger Button */}
+          <button
+            onClick={() => setIsMobileNavOpen(true)}
+            type="button"
+            className="flex size-9 items-center justify-center rounded-full border border-border text-foreground hover:bg-muted md:hidden"
+            aria-label="Mở menu di động"
+          >
+            <Menu className="size-5" />
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Search Bar (Below Header on Mobile) */}
+      {!isAuthPage && !isDashboardPage && (
+        <div className="border-t border-border px-4 py-2.5 md:hidden">
+          <button
+            onClick={handleSearchClick}
+            type="button"
+            className="flex w-full items-center gap-3 rounded-full border border-border bg-card px-4 py-2 text-left shadow-sm"
+          >
+            <Search className="size-4 text-primary" />
+            <div className="flex flex-col">
+              <span className="text-xs font-semibold text-foreground">
+                Bạn muốn đi đâu?
+              </span>
+              <span className="text-[11px] text-muted-foreground">
+                Mọi nơi · Mọi tuần · Thêm khách
+              </span>
+            </div>
+          </button>
+        </div>
+      )}
+
+      {/* Mobile Drawer Navigation */}
+      {isMobileNavOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in-0"
+            onClick={() => setIsMobileNavOpen(false)}
+          />
+          <div className="fixed inset-y-0 right-0 w-full max-w-xs border-l border-border bg-card p-6 shadow-xl animate-in slide-in-from-right">
+            <div className="flex items-center justify-between pb-4 border-b border-border">
+              <Link
+                href="/"
+                className="flex items-center gap-2 text-primary font-bold text-lg"
+              >
+                <Home className="size-5" />
+                <span>StayHub</span>
+              </Link>
+              <button
+                onClick={() => setIsMobileNavOpen(false)}
+                type="button"
+                className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+                aria-label="Đóng menu"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
+
+            <div className="mt-6 flex flex-col gap-2">
+              <Link
+                href="/search"
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+              >
+                <Search className="size-4 text-primary" />
+                Tìm kiếm chỗ ở
+              </Link>
+              <Link
+                href="/host"
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+              >
+                <Building2 className="size-4 text-primary" />
+                Đón tiếp khách
+              </Link>
+
+              {status === "authenticated" ? (
+                <>
+                  <Link
+                    href="/bookings"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+                  >
+                    <Calendar className="size-4 text-primary" />
+                    Chuyến đi của tôi
+                  </Link>
+                  {(userRole === "HOST" || userRole === "ADMIN") && (
+                    <Link
+                      href="/host"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+                    >
+                      <Building2 className="size-4 text-primary" />
+                      Host Dashboard
+                    </Link>
+                  )}
+                  {userRole === "ADMIN" && (
+                    <Link
+                      href="/admin"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+                    >
+                      <Shield className="size-4 text-primary" />
+                      Admin Portal
+                    </Link>
+                  )}
+                  <div className="pt-4 border-t border-border mt-2">
+                    <Button
+                      variant="destructive"
+                      className="w-full justify-start"
+                      onClick={() => signOut({ callbackUrl: "/" })}
+                    >
+                      <LogOut className="size-4 mr-2" />
+                      Đăng xuất
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <div className="pt-4 border-t border-border mt-2 flex flex-col gap-2">
+                  <Button asChild variant="default" className="w-full">
+                    <Link href="/register">Đăng ký tài khoản</Link>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full">
+                    <Link href="/login">Đăng nhập</Link>
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}

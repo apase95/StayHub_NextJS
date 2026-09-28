@@ -1,0 +1,33 @@
+import Link from "next/link";
+import { CreditCard } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export default async function BookingFlowPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="flex flex-col items-center justify-center rounded-card border border-dashed border-border p-16 text-center">
+        <div className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <CreditCard className="size-6" />
+        </div>
+        <h1 className="mt-4 text-2xl font-bold tracking-tight text-foreground">
+          Thanh toán Đặt phòng chỗ ở #{id}
+        </h1>
+        <p className="mt-2 max-w-md text-sm text-muted-foreground">
+          Trang hoàn tất đặt phòng, nhập mã giảm giá và chuyển hướng cổng thanh
+          toán VNPay (theo TSK-043).
+        </p>
+        <div className="mt-6">
+          <Button asChild variant="outline">
+            <Link href={`/properties/${id}`}>Quay lại xem chỗ ở</Link>
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
