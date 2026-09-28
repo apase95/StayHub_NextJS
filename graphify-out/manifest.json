@@ -1,0 +1,92 @@
+{
+  "architecture/1_SystemOverview.md": {
+    "mtime": 1789630506.0708098,
+    "seen": 1790558312.6775427,
+    "ast_hash": "40bb3b3e2d91884f436b9d0b6d2ef899",
+    "semantic_hash": "40bb3b3e2d91884f436b9d0b6d2ef899"
+  },
+  "architecture/2_TechStack.md": {
+    "mtime": 1789955635.0305634,
+    "seen": 1790558312.677548,
+    "ast_hash": "d1911eb661f7ef3cf89871f8bad3548c",
+    "semantic_hash": "d1911eb661f7ef3cf89871f8bad3548c"
+  },
+  "architecture/3_API_Design.md": {
+    "mtime": 1789630682.6044614,
+    "seen": 1790558312.67755,
+    "ast_hash": "e5f894ba9922dfe60758bd130386a835",
+    "semantic_hash": "e5f894ba9922dfe60758bd130386a835"
+  },
+  "business/OverviewBusiness.md": {
+    "mtime": 1789630755.618835,
+    "seen": 1790558312.677551,
+    "ast_hash": "c5497e01de1e77e95d998db8c5a9d83b",
+    "semantic_hash": "c5497e01de1e77e95d998db8c5a9d83b"
+  },
+  "contributors/FirstStep.md": {
+    "mtime": 1789955960.2294085,
+    "seen": 1790558312.6775522,
+    "ast_hash": "4c3acf4decb448fdb6c3995b532bdf2f",
+    "semantic_hash": "4c3acf4decb448fdb6c3995b532bdf2f"
+  },
+  "contributors/Rules.md": {
+    "mtime": 1789955895.8536806,
+    "seen": 1790558312.677553,
+    "ast_hash": "80ba24783410ea6988748affc79d64e6",
+    "semantic_hash": "80ba24783410ea6988748affc79d64e6"
+  },
+  "database/10_Discounts.md": {
+    "mtime": 1789630471.594067,
+    "seen": 1790558312.677554,
+    "ast_hash": "54036fb719f5412f902eb4c35bf66574",
+    "semantic_hash": "54036fb719f5412f902eb4c35bf66574"
+  },
+  "database/1_DomainOverview.md": {
+    "mtime": 1789630471.594067,
+    "seen": 1790558312.6775546,
+    "ast_hash": "cd1b9efcd9e7284a9c7d3b1a7ae58a94",
+    "semantic_hash": "cd1b9efcd9e7284a9c7d3b1a7ae58a94"
+  },
+  "database/6_Properties.md": {
+    "mtime": 1789354288.2006857,
+    "seen": 1790558312.6775556,
+    "ast_hash": "c3f7d7cd18dcc098fa099b2284459ea0",
+    "semantic_hash": "c3f7d7cd18dcc098fa099b2284459ea0"
+  },
+  "database/7_Booking.md": {
+    "mtime": 1789630471.5940654,
+    "seen": 1790558312.6775563,
+    "ast_hash": "9136872f94543ee5c4818856b3f6c58a",
+    "semantic_hash": "9136872f94543ee5c4818856b3f6c58a"
+  },
+  "database/8_Payment.md": {
+    "mtime": 1789630471.5940654,
+    "seen": 1790558312.6775572,
+    "ast_hash": "47fac43d36b63e83fb57cd3491597d86",
+    "semantic_hash": "47fac43d36b63e83fb57cd3491597d86"
+  },
+  "database/9_Reviews.md": {
+    "mtime": 1787799476.7985647,
+    "seen": 1790558312.6775582,
+    "ast_hash": "7b002d8fdf8345244a3ceb832627c662",
+    "semantic_hash": "7b002d8fdf8345244a3ceb832627c662"
+  },
+  "tasklist/TaskList.md": {
+    "mtime": 1790558190.8328657,
+    "seen": 1790558312.6775591,
+    "ast_hash": "3022ecdfa12e4fb713eaac73624b0a70",
+    "semantic_hash": "3022ecdfa12e4fb713eaac73624b0a70"
+  },
+  "ui/ApplicationDesigned.md": {
+    "mtime": 1787556787.2028425,
+    "seen": 1790558312.6775599,
+    "ast_hash": "6503ca5df218966fd0093660c48f6d96",
+    "semantic_hash": "6503ca5df218966fd0093660c48f6d96"
+  },
+  "ui/UXUI_DesignSystem.md": {
+    "mtime": 1787801173.5179718,
+    "seen": 1790558312.6775606,
+    "ast_hash": "417ce691723314cefbbf71d500c2d5fa",
+    "semantic_hash": "417ce691723314cefbbf71d500c2d5fa"
+  }
+}
