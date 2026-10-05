@@ -1,4 +1,4 @@
-# HƯỚNG DẪN BƯỚC ĐẦU (FIRST STEP) — DỰ ÁN STAYHUB (Next.js)
+# Getting Started
 
 ---
 
@@ -19,9 +19,9 @@
 
 ## BƯỚC 1: CLONE DỰ ÁN
 
-```bashNext
+```bash
 git clone https://github.com/apase95/StayHub_NextJS.git
-cd StayHub
+cd StayHub_NextJS
 ```
 
 ---
@@ -61,7 +61,7 @@ cp .env.example .env.local
 Mở `.env.local` và điền ít nhất:
 ```bash
 DATABASE_URL="postgresql://stayhub:password@localhost:5432/stayhub_db"
-NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_URL="http://localhost:8080"
 NEXTAUTH_SECRET="any-random-string-for-dev"
 ```
 
@@ -92,7 +92,7 @@ pnpm prisma studio
 pnpm dev
 ```
 
-Mặc định ứng dụng chạy tại `http://localhost:3000`.
+Mặc định ứng dụng chạy tại `http://localhost:8080`.
 
 Next.js hỗ trợ Fast Refresh — sửa file TypeScript/TSX là tự reload ngay, không cần restart thủ công.
 

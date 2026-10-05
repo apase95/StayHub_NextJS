@@ -1,4 +1,4 @@
-# StayHub — Task List (Next.js)
+# StayHub Task List
 
 ## Phân công 3 người
 
@@ -79,7 +79,7 @@ StayHub/
 
 - [x] **TSK-002** `[INFRA]` Khởi tạo Next.js 15 App Router với TypeScript strict: `tsconfig.json` (`"strict": true`, path alias `@/*`), cài pnpm, khởi tạo `package.json`. *(Estimate: 1h · Priority: Urgent · Blocking ALL)*
 
-- [x] **TSK-003** `[INFRA]` Cài và cấu hình Tailwind CSS v4, thêm CSS variables màu theo `UXUI_DesignSystem.md` vào `globals.css`. Setup font Inter. *(Estimate: 1h · Priority: Urgent · Blocking FE)*
+- [x] **TSK-003** `[INFRA]` Cài và cấu hình Tailwind CSS v4, thêm CSS variables màu theo [design system](../product/design-system.md) vào `globals.css`. Setup font Inter. *(Estimate: 1h · Priority: Urgent · Blocking FE)*
 
 - [x] **TSK-004** `[INFRA]` Cài shadcn/ui, tạo `components.json`, cài các component nền: `Button`, `Input`, `Card`, `Badge`, `Dialog`, `Select`, `Tabs`, `Skeleton`. *(Estimate: 1h · Priority: Urgent · Blocking FE)*
 
@@ -93,7 +93,7 @@ StayHub/
 
 - [x] **TSK-009** `[INFRA]` `src/lib/utils.ts`: `cn()` (clsx + tailwind-merge), `formatPrice()` (VND Intl formatter), `formatDate()`, `calculateNights()`. *(Estimate: 0.5h · Priority: High · Blocking FE và BE)*
 
-- [x] **TSK-010** `[BE]` `src/lib/api-response.ts`: type `ApiResponse<T>`, hàm `ok()` và `fail()` theo chuẩn `Rules.md`. `src/types/index.ts`: `Role`, `BookingStatus`, `PaymentStatus`, `PropertyType`, `AmenityType`. *(Estimate: 1h · Priority: Urgent · Blocking BE)*
+- [x] **TSK-010** `[BE]` `src/lib/api-response.ts`: type `ApiResponse<T>`, hàm `ok()` và `fail()` theo [development conventions](../contributing/conventions.md). `src/types/index.ts`: `Role`, `BookingStatus`, `PaymentStatus`, `PropertyType`, `AmenityType`. *(Estimate: 1h · Priority: Urgent · Blocking BE)*
 
 - [x] **TSK-011** `[FE]` Khung layout chung: `src/components/common/Navbar.tsx` + `Footer.tsx` (placeholder, chưa cần login state). *(Estimate: 1.5h · Priority: High · có thể làm song song TSK-007)*
 

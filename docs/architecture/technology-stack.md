@@ -1,4 +1,4 @@
-# TECHSTACK — DỰ ÁN STAYHUB (Next.js)
+# Technology Stack
 
 ## 1. Tổng quan
 
@@ -144,7 +144,7 @@ StayHub/
 DATABASE_URL="postgresql://stayhub:password@localhost:5432/stayhub_db"
 
 # NextAuth
-NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_URL="http://localhost:8080"
 NEXTAUTH_SECRET="your-secret-here"
 
 # Google OAuth (tuỳ chọn)
@@ -167,8 +167,8 @@ CLOUDINARY_API_SECRET=""
 VNPAY_TMN_CODE=""
 VNPAY_HASH_SECRET=""
 VNPAY_PAY_URL="https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
-VNPAY_RETURN_URL="http://localhost:3000/payments/vnpay/return"
-VNPAY_IPN_URL="http://localhost:3000/api/payments/vnpay/ipn"
+VNPAY_RETURN_URL="http://localhost:8080/payments/vnpay/return"
+VNPAY_IPN_URL="http://localhost:8080/api/payments/vnpay/ipn"
 
 # Upload
 UPLOAD_USE_CLOUDINARY=false

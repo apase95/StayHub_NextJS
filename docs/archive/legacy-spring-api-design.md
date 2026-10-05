@@ -1,5 +1,9 @@
 # API Design
 
+> **Legacy:** Tài liệu này mô tả Spring Boot, Thymeleaf, `/api/v1` và Spring
+> Security của kiến trúc trước đây. Nó không phải contract của ứng dụng Next.js
+> hiện tại. Route Handlers trong `src/app/api` là source of truth.
+
 ## 1. Nguyên tắc chung
 
 StayHub sử dụng **RESTful API** cho các endpoint trả về dữ liệu dạng JSON (dùng cho AJAX, Alpine.js, htmx). Các trang chính sử dụng **Thymeleaf** và được phục vụ qua các controller trả về template.
@@ -319,5 +323,5 @@ Các custom exception:
 
 ## 8. Tài liệu liên quan
 
-- [Quy chuẩn API trong Rules.md](../contributors/Rules.md)
-- [Luồng nghiệp vụ sơ bộ](0_DemoSystem.md)
+- [Quy chuẩn phát triển hiện tại](../contributing/conventions.md)
+- [User journeys hiện tại](../product/user-journeys.md)

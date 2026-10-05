@@ -1,4 +1,4 @@
-# TỔNG QUAN NGHIỆP VỤ DỰ ÁN STAYHUB
+# StayHub Business Overview
 
 ## 1. StayHub là gì?
 

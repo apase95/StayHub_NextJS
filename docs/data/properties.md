@@ -2,8 +2,8 @@
 
 | Column | Type | Constraint | Description |
 |---|---|---|---|
-| `id` | BIGINT | PK | Property identifier |
-| `host_id` | BIGINT | FK → users.id | Owner/host |
+| `id` | TEXT | PK, `cuid()` | Property identifier |
+| `host_id` | TEXT | FK → users.id | Owner/host |
 | `title` | VARCHAR(255) | NOT NULL | Property title |
 | `description` | TEXT | NOT NULL | Description |
 | `address` | VARCHAR(500) | NOT NULL | Address |
@@ -37,27 +37,17 @@ status:
 - DRAFT
 ```
 
-### Relationship
+### Relationships
 
-```text
-users (HOST)
-       1
-       │
-       │ owns
-       ▼
-properties
-  ├── 1 : N property_images
-  ├── N : M amenities
-  ├── 1 : N bookings
-  └── 1 : N reviews
-```
+Xem [Physical relational model](relational-model.md). Diagram canonical giữ
+cardinality của Property, image, amenity, booking và review tại một nơi.
 
-# Property_Images
+## Property Images
 
 | Column | Type | Constraint | Description |
 |---|---|---|---|
-| `id` | BIGINT | PK | Image identifier |
-| `property_id` | BIGINT | FK | Related property |
+| `id` | TEXT | PK, `cuid()` | Image identifier |
+| `property_id` | TEXT | FK | Related property |
 | `image_url` | VARCHAR(1000) | NOT NULL | Image URL |
 | `public_id` | VARCHAR(255) | NULL | Cloudinary/local storage identifier |
 | `display_order` | INT | NOT NULL | Gallery order |
@@ -76,20 +66,17 @@ For each property:
 COUNT(property_images WHERE is_cover = true) <= 1
 ```
 
-An `ACTIVE` property must have a cover image. If the final image is removed, the service returns the property to `DRAFT`. Host delete actions archive a property as `INACTIVE`; they do not physically delete rows needed by future Booking/Review history.
+Host delete actions archive a property as `INACTIVE`; they do not physically delete rows needed by Booking/Review history. Tự chuyển `DRAFT`/`ACTIVE` khi thay đổi ảnh chưa được triển khai.
 
 
-# Property_Amenities
+## Property Amenities
 
 This table implements the many-to-many relationship.
 
 | Column | Type | Constraint |
 |---|---|---|
-| `property_id` | BIGINT | PK, FK → properties.id |
-| `amenity_id` | BIGINT | PK, FK → amenities.id |
+| `property_id` | TEXT | PK, FK → properties.id |
+| `amenity_id` | TEXT | PK, FK → amenities.id |
 
-```mermaid
-flowchart LR
-    P[Property] -->|1..N| PA[property_amenities]
-    A[Amenity] -->|1..N| PA
-```
+`(property_id, amenity_id)` là composite primary key. Cả hai foreign key đều
+`ON DELETE CASCADE`.

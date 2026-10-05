@@ -3,10 +3,10 @@
 
 | Column | Type | Constraint | Description |
 |---|---|---|---|
-| `id` | BIGINT | PK | Review identifier |
-| `booking_id` | BIGINT | FK, UNIQUE | Source booking |
-| `property_id` | BIGINT | FK | Reviewed property |
-| `guest_id` | BIGINT | FK | Review author |
+| `id` | TEXT | PK, `cuid()` | Review identifier |
+| `booking_id` | TEXT | FK, UNIQUE | Source booking |
+| `property_id` | TEXT | FK | Reviewed property |
+| `guest_id` | TEXT | FK | Review author |
 | `rating` | SMALLINT | NOT NULL | Rating from 1 to 5 |
 | `comment` | TEXT | NULL | Review content |
 | `created_at` | TIMESTAMPTZ | NOT NULL | Creation timestamp |
@@ -20,13 +20,8 @@ Booking.status must equal COMPLETED
 
 before a review can be created.
 
-```mermaid
-flowchart LR
-    B[Booking] --> C{Status = COMPLETED?}
-    C -->|No| X[Reject Review]
-    C -->|Yes| R[Create Review]
-    R --> P[Property]
-```
+Xem [Create review sequence](../architecture/sequences/reviews.md#create-review)
+để tránh duy trì hai diagram cho cùng một transaction.
 
 ### Recommended constraints
 

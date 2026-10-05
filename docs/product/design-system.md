@@ -1,4 +1,4 @@
-# UI/UX DESIGN SYSTEM
+# StayHub Design System
 
 ## 1. Color Palette
 | Tên Style | Alias | Hex Code | Ứng dụng |
@@ -97,4 +97,4 @@ Vẽ các Component (Frame) sau trên Stitch/Figma để dễ dàng nhân bản 
     1. `Available` — nền trắng, chữ đen, hover viền `color-primary-500`.
     2. `Selected Range` — nền `color-primary-500` nhạt (`#FFE5E5`), 2 đầu mút (check-in/check-out) tô đậm `color-primary-500` nền, chữ trắng.
     3. `Booked/Disabled` — chữ xám nhạt, có gạch chéo mờ (strike-through), không thể click, tooltip hiển thị "Booked" khi hover.
-*   Đây là Component tái sử dụng cho cả luồng Guest chọn ngày và luồng Backend hiển thị trực quan kết quả availability check (theo `flow.md`).
+*   Đây là component tái sử dụng cho luồng Guest chọn ngày và hiển thị kết quả availability check trong [user journey](user-journeys.md).

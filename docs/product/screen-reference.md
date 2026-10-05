@@ -1,3 +1,5 @@
+# Screen Reference
+
 [Stitch Design Demo](https://stitch.withgoogle.com/projects/324901507144460965)
 
 #### Logo
@@ -23,4 +25,3 @@
 
 #### Host Dashboard
 <img width="1280" height="795" alt="host_dashboard" src="https://github.com/user-attachments/assets/3940f447-3ae0-444d-9679-8d4fef7b7589" />
-
